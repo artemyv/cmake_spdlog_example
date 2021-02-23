@@ -1,33 +1,22 @@
 ﻿#include <spdlog/spdlog.h>
-#include <sstream>
-
-#define SPDLOG_LOGGER_STREAM(log, lvl)                                                                   \
-    log && log->should_log(lvl) &&                                                                       \
-        LogStream(log, lvl, spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}) == \
-            LogLine()
-
-class LogLine
+#include <spdlog/fmt/bundled/printf.h>
+template <class loggerPtr, class... Args>
+void loglineprintf(loggerPtr                 logger,
+    spdlog::level::level_enum level,
+    spdlog::source_loc        loc,
+    const char* fmt,
+    const Args&... args) noexcept
 {
-    std::ostringstream m_ss;
-public:
-    LogLine() {}
-    template <typename T> LogLine& operator<<(const T& t) { m_ss << t; return *this; }
-    std::string str() const { return m_ss.str(); }
-};
-
-class LogStream {
-    std::shared_ptr<spdlog::logger> m_log;
-    spdlog::level::level_enum m_lvl;
-    spdlog::source_loc m_loc;
-public:
-    LogStream(std::shared_ptr<spdlog::logger> log, spdlog::level::level_enum lvl, spdlog::source_loc loc) :m_log{ log }, m_lvl{ lvl }, m_loc{ loc }{}
-    bool operator==(const LogLine& line) {
-        m_log->log(m_loc, m_lvl, "{}", line.str()); 
-        return true;
+    if (logger && logger->should_log(level))
+    {
+        logger->log(loc, level, "{}", fmt::sprintf(fmt, args...));
     }
-};
+}
+
+#define SPDLOG_LOGGER_PRINTF(logger, level, ...) \
+    loglineprintf(logger, level, spdlog::source_loc{__FILE__, __LINE__, SPDLOG_FUNCTION}, __VA_ARGS__)
 
 //specific log implementation macros
 
-#define ERROR spdlog::level::err
-#define LOG(x) SPDLOG_LOGGER_STREAM(spdlog::default_logger(),x)
+#define LOG_ERROR(...) SPDLOG_LOGGER_PRINTF(spdlog::default_logger(),spdlog::level::err,__VA_ARGS__)
+#define LOG_INFO(...) SPDLOG_LOGGER_PRINTF(spdlog::default_logger(),spdlog::level::info,__VA_ARGS__)

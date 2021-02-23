@@ -3,8 +3,8 @@
 #include "logger.h"
 
 int main() {
-    SPDLOG_INFO("Hello from spdlog!");
-
-    LOG(ERROR) << "AAAA" << 123;
+    
+    LOG_ERROR("do as printf,%s", "format");
+    LOG_INFO("do as printf,%d", 125);
     return 0;
 }
