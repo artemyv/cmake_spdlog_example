@@ -41,3 +41,4 @@ Debug
 *.sln
 /extern/spdlog-src
 cmake_install.cmake
+/out
