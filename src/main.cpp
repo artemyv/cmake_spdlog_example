@@ -1,6 +1,7 @@
 #include <spdlog/sinks/stdout_color_sinks.h> // or "../stdout_sinks.h" if no colors needed
 #include <spdlog/spdlog.h>
 #include "logger.h"
+#include <iostream>
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h> // Defines macros used by TraceLoggingProvider.h
@@ -61,6 +62,9 @@ int main() {
     sample.NamingData();
     sample.LevelsAndKeywords();
 
+    fmt::print("Please stop the trace and click enter\n");
+
+    std::cin.get();
 
     TraceLoggingUnregister(g_hMyComponentProvider);
 
