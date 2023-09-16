@@ -33,11 +33,9 @@
 /.vs
 CMakeFiles
 CMakeCache.txt
-/extern/spdlog-build
-/extern/spdlog-download
 Debug
 *.vcxproj
 *.filters
 *.sln
-/extern/spdlog-src
 cmake_install.cmake
+/build

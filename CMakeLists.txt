@@ -2,7 +2,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21)
 project(cmake_spdlog_example)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -31,3 +31,4 @@ endif ()
 add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/extern/spdlog-src
         ${CMAKE_CURRENT_BINARY_DIR}/extern/spdlog-build
         EXCLUDE_FROM_ALL)
+

@@ -11,7 +11,11 @@ class LogLine
     std::ostringstream m_ss;
 public:
     LogLine() {}
-    template <typename T> LogLine& operator<<(const T& t) { m_ss << t; return *this; }
+    template <typename T> LogLine& operator<<(T t) { m_ss << t; return *this; }
+
+
+    //template <typename T, typename = std::enable_if_t<std::is_function_v<T>>> LogLine& operator<<(T val) { m_ss << t; return *this; }
+
     std::string str() const { return m_ss.str(); }
 };
 
@@ -29,5 +33,5 @@ public:
 
 //specific log implementation macros
 
-#define ERROR spdlog::level::err
+#define LVL_ERROR spdlog::level::err
 #define LOG(x) SPDLOG_LOGGER_STREAM(spdlog::default_logger(),x)
