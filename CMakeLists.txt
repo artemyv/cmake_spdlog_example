@@ -10,7 +10,7 @@ include(cmake/PreventInSourceBuilds.cmake)
 # Set the project name and language
 project(
   cmake_spdlog_example
-  VERSION 1.0.1
+  VERSION 1.0.2
   DESCRIPTION "Playground for cmake and spdlog"
   HOMEPAGE_URL "%%myurl%%"
   LANGUAGES CXX)
@@ -18,6 +18,10 @@ project(
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
+
+#dependencies
+include(Dependencies.cmake)
+myproject_setup_dependencies()
 
 # Set the compiler options
 option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" ON)
@@ -35,25 +39,4 @@ include(cmake/CompilerWarnings.cmake)
 
 # define the library first before anything that depends on it
 add_subdirectory(src)
-
-########################################################################################################################
-# Dependencies
-########################################################################################################################
-configure_file(extern/CMakeLists.txt.spdlog extern/spdlog-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
-        RESULT_VARIABLE result
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/extern/spdlog-download)
-if (result)
-    message(FATAL_ERROR "CMake step for spdlog failed: ${result}")
-endif ()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-        RESULT_VARIABLE result
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/extern/spdlog-download)
-if (result)
-    message(FATAL_ERROR "Build step for spdlog failed: ${result}")
-endif ()
-
-add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/extern/spdlog-src
-        ${CMAKE_CURRENT_BINARY_DIR}/extern/spdlog-build
-        EXCLUDE_FROM_ALL)
 
