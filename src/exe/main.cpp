@@ -1,11 +1,10 @@
 #include <spdlog/sinks/stdout_color_sinks.h> // or "../stdout_sinks.h" if no colors needed
 #include <spdlog/spdlog.h>
 
-#include <version.h>
+#include <hello_lib.h>
 
 int main() {
-    SPDLOG_INFO("Hello from project: {}.", cmake_spdlog_example_DESCRIPTION);
-    SPDLOG_INFO("Version: {}", cmake_spdlog_example_VERSION);
-	
+    SPDLOG_INFO(_TXT("{}."), hello_lib::getDescription());
+    SPDLOG_INFO(_TXT("{}."), hello_lib::getVersion());
     return 0;
 }

@@ -21,7 +21,7 @@ function(cmake_spdlog_example_setup_dependencies)
       GITHUB_REPOSITORY
       "gabime/spdlog"
       OPTIONS
-      "SPDLOG_FMT_EXTERNAL ON")
+      "SPDLOG_FMT_EXTERNAL ON" "SPDLOG_WCHAR_SUPPORT ON" "SPDLOG_WCHAR_FILENAMES ON")
   endif()
 
   if(NOT TARGET Catch2::Catch2WithMain)

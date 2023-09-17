@@ -1,4 +1,5 @@
 ﻿#include <string>
+#include <version.h>
 
 namespace hello_lib
 {
