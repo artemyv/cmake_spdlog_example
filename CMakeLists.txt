@@ -21,17 +21,19 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
 #dependencies
 include(Dependencies.cmake)
-myproject_setup_dependencies()
+cmake_spdlog_example_setup_dependencies()
 
 # Set the compiler options
-option(myproject_WARNINGS_AS_ERRORS "Treat Warnings As Errors" ON)
-add_library(myproject_warnings INTERFACE)
-add_library(myproject::myproject_warnings ALIAS myproject_warnings)
+option(cmake_spdlog_example_WARNINGS_AS_ERRORS "Treat Warnings As Errors" ON)
+add_library(cmake_spdlog_example_warnings INTERFACE)
+add_library(cmake_spdlog_example::cmake_spdlog_example_warnings ALIAS cmake_spdlog_example_warnings)
+
+option(cmake_spdlog_example_USE_WSTRING "Use wide strings" ON)
 
 include(cmake/CompilerWarnings.cmake)
-  myproject_set_project_warnings(
-    myproject_warnings
-    ${myproject_WARNINGS_AS_ERRORS}
+  cmake_spdlog_example_set_project_warnings(
+    cmake_spdlog_example_warnings
+    ${cmake_spdlog_example_WARNINGS_AS_ERRORS}
     ""
     ""
     ""
@@ -39,4 +41,3 @@ include(cmake/CompilerWarnings.cmake)
 
 # define the library first before anything that depends on it
 add_subdirectory(src)
-

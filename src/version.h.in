@@ -1,5 +1,12 @@
 ﻿// the configured options and settings for Tutorial
 #cmakedefine cmake_spdlog_example_VERSION_MAJOR @cmake_spdlog_example_VERSION_MAJOR@
 #cmakedefine cmake_spdlog_example_VERSION_MINOR @cmake_spdlog_example_VERSION_MINOR@
-#cmakedefine cmake_spdlog_example_VERSION "@cmake_spdlog_example_VERSION@"
-#cmakedefine cmake_spdlog_example_DESCRIPTION "@cmake_spdlog_example_DESCRIPTION@"
+
+#define _TXT(x)    _TTT(x) 
+#ifdef cmake_spdlog_example_USE_WSTRING
+#define _TTT(x)     L ## x 
+#else
+#define _TTT(x)      x 
+#endif
+#cmakedefine cmake_spdlog_example_VERSION _TXT("@cmake_spdlog_example_VERSION@")
+#cmakedefine cmake_spdlog_example_DESCRIPTION _TXT("@cmake_spdlog_example_DESCRIPTION@")

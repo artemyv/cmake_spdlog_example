@@ -1,14 +1,13 @@
 ﻿#include "hello_lib.h"
 
 #include <version.h>
-#include <fmt/format.h>
+#include <fmt/xchar.h>
 
-std::string hello_lib::getDescription()
+hello_lib::retstr hello_lib::getDescription()
 {
-	return fmt::format("Hello from project: {}.", cmake_spdlog_example_DESCRIPTION);
+	return fmt::format(_TXT("Hello from project: {}."), cmake_spdlog_example_DESCRIPTION);
 }
- 
-std::string hello_lib::getVersion()
+hello_lib::retstr hello_lib::getVersion()
 {
-	return fmt::format("Version: {}", cmake_spdlog_example_VERSION);
+	return fmt::format(_TXT("Version: {}."), cmake_spdlog_example_VERSION);
 }

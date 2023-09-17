@@ -4,8 +4,12 @@
 #include <hello_lib.h>
 
 int main() {
-    SPDLOG_INFO("{}.", hello_lib::getDescrption());
-    SPDLOG_INFO("{}" , hello_lib::getVersion());
-	
+#ifdef cmake_spdlog_example_USE_WSTRING
+    SPDLOG_INFO(L"W {}.", hello_lib::getDescrptionW());
+    SPDLOG_INFO(L"W {}" , hello_lib::getVersionW());
+#else 
+    SPDLOG_INFO("U {}.", hello_lib::getDescrption());
+    SPDLOG_INFO("U {}" , hello_lib::getVersion());
+#endif	
     return 0;
 }
