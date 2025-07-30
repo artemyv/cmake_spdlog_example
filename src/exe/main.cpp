@@ -1,48 +1,52 @@
-#include <spdlog/sinks/stdout_color_sinks.h> // or "../stdout_sinks.h" if no colors needed
+#include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/spdlog.h>
-#include  <source_location>
+#include <source_location>
 #include <string>
-#define SKSE_MAKE_SOURCE_LOGGER(a_func, a_type)                                       \
-                                                                                      \
-	template <class... Args>                                                          \
-	struct [[maybe_unused]] a_func                                                    \
-	{                                                                                 \
-		a_func() = delete;                                                            \
-                                                                                      \
-		explicit a_func(                                                              \
-			fmt::format_string<Args...> a_fmt,                                        \
-			Args&&... a_args,                                                         \
-			std::source_location a_loc = std::source_location::current()) \
-		{                                                                             \
-			spdlog::log(                                                              \
-				spdlog::source_loc{                                                   \
-					a_loc.file_name(),                                                \
-					static_cast<int>(a_loc.line()),                                   \
-					a_loc.function_name() },                                          \
-				spdlog::level::a_type,                                                \
-				a_fmt,                                                                \
-				std::forward<Args>(a_args)...);                                       \
-		}                                                                             \
-	};                                                                                \
-                                                                                      \
-	template <class... Args>                                                          \
-	a_func(fmt::format_string<Args...>, Args&&...) -> a_func<Args...>;
 
 namespace Log
 {
-	SKSE_MAKE_SOURCE_LOGGER(trace, trace);
-	SKSE_MAKE_SOURCE_LOGGER(debug, debug);
-	SKSE_MAKE_SOURCE_LOGGER(info, info);
-	SKSE_MAKE_SOURCE_LOGGER(warn, warn);
-	SKSE_MAKE_SOURCE_LOGGER(err, err);
-	SKSE_MAKE_SOURCE_LOGGER(critical, critical);
+    template <spdlog::level::level_enum Level, class... Args>
+    struct [[maybe_unused]] Logger
+    {
+        Logger() = delete;
+        explicit Logger(
+            fmt::format_string<Args...> fmt,
+            Args&&... args,
+            std::source_location loc = std::source_location::current())
+        {
+            spdlog::log(
+                spdlog::source_loc{loc.file_name(), static_cast<int>(loc.line()), loc.function_name()},
+                Level,
+                fmt,
+                std::forward<Args>(args)...);
+        }
+    };
+
+    // Deduction guide for Logger
+    template <spdlog::level::level_enum Level, class... Args>
+    Logger(fmt::format_string<Args...>, Args&&..., std::source_location) -> Logger<Level, Args...>;
+    template <spdlog::level::level_enum Level, class... Args>
+    Logger(fmt::format_string<Args...>, Args&&...) -> Logger<Level, Args...>;
+
+    template <class... Args>
+    using trace    = Logger<spdlog::level::trace, Args...>;
+    template <class... Args>
+    using debug    = Logger<spdlog::level::debug, Args...>;
+    template <class... Args>
+    using info     = Logger<spdlog::level::info, Args...>;
+    template <class... Args>
+    using warn     = Logger<spdlog::level::warn, Args...>;
+    template <class... Args>
+    using err      = Logger<spdlog::level::err, Args...>;
+    template <class... Args>
+    using critical = Logger<spdlog::level::critical, Args...>;
 }
 
 int main()
 {
-    Log::info("Hello info from {}.", "main.cpp");
-    Log::err("Hello err from {}.", "main.cpp");
-    Log::warn("Hello warn from {}.", "main.cpp");
-    Log::debug("Hello debug from {}.", "main.cpp");
+    Log::info{"Hello info from {}.", "main.cpp"};
+    Log::err{"Hello err from {}.", "main.cpp"};
+    Log::warn{"Hello warn from {}.", "main.cpp"};
+    Log::debug{"Hello debug from {}.", "main.cpp"};
     return 0;
 }
