@@ -44,9 +44,9 @@ namespace Log
 
 int main()
 {
-    Log::info{"Hello info from {}.", "main.cpp"};
-    Log::err{"Hello err from {}.", "main.cpp"};
-    Log::warn{"Hello warn from {}.", "main.cpp"};
-    Log::debug{"Hello debug from {}.", "main.cpp"};
+    Log::info("Hello info from {}.", "main.cpp");
+    Log::err("Hello err from {}.", "main.cpp");
+    Log::warn("Hello warn from {}.", "main.cpp");
+    Log::debug("Hello debug from {}.", "main.cpp");
     return 0;
 }
