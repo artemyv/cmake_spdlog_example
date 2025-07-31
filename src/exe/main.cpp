@@ -9,8 +9,9 @@ namespace Log
     struct [[maybe_unused]] Logger
     {
         Logger() = delete;
+
         explicit Logger(
-            fmt::format_string<Args...> fmt,
+            spdlog::format_string_t<Args...> fmt,
             Args&&... args,
             std::source_location loc = std::source_location::current())
         {
@@ -21,7 +22,7 @@ namespace Log
                 std::forward<Args>(args)...);
         }
         explicit Logger(
-            fmt::wformat_string<Args...> fmt,
+            spdlog::wformat_string_t<Args...> fmt,
             Args&&... args,
             std::source_location loc = std::source_location::current())
         {
@@ -35,22 +36,16 @@ namespace Log
 
     // Deduction guide for Logger
     template <spdlog::level::level_enum Level, class... Args>
-    Logger(fmt::format_string<Args...>, Args&&...) -> Logger<Level, Args...>;
+    Logger(spdlog::format_string_t<Args...>, Args&&...) -> Logger<Level, Args...>;
     template <spdlog::level::level_enum Level, class... Args>
-    Logger(fmt::wformat_string<Args...>, Args&&...) -> Logger<Level, Args...>;
+    Logger(spdlog::wformat_string_t<Args...>, Args&&...) -> Logger<Level, Args...>;
 
-    template <class... Args>
-    using trace    = Logger<spdlog::level::trace, Args...>;
-    template <class... Args>
-    using debug    = Logger<spdlog::level::debug, Args...>;
-    template <class... Args>
-    using info     = Logger<spdlog::level::info, Args...>;
-    template <class... Args>
-    using warn     = Logger<spdlog::level::warn, Args...>;
-    template <class... Args>
-    using err      = Logger<spdlog::level::err, Args...>;
-    template <class... Args>
-    using critical = Logger<spdlog::level::critical, Args...>;
+    template <class... Args> using trace    = Logger<spdlog::level::trace   , Args...>;
+    template <class... Args> using debug    = Logger<spdlog::level::debug   , Args...>;
+    template <class... Args> using info     = Logger<spdlog::level::info    , Args...>;
+    template <class... Args> using warn     = Logger<spdlog::level::warn    , Args...>;
+    template <class... Args> using err      = Logger<spdlog::level::err     , Args...>;
+    template <class... Args> using critical = Logger<spdlog::level::critical, Args...>;
 }
 
 int main()
