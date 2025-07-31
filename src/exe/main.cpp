@@ -20,13 +20,24 @@ namespace Log
                 fmt,
                 std::forward<Args>(args)...);
         }
+        explicit Logger(
+            fmt::wformat_string<Args...> fmt,
+            Args&&... args,
+            std::source_location loc = std::source_location::current())
+        {
+            spdlog::log(
+                spdlog::source_loc{loc.file_name(), static_cast<int>(loc.line()), loc.function_name()},
+                Level,
+                fmt,
+                std::forward<Args>(args)...);
+        }
     };
 
     // Deduction guide for Logger
     template <spdlog::level::level_enum Level, class... Args>
-    Logger(fmt::format_string<Args...>, Args&&..., std::source_location) -> Logger<Level, Args...>;
-    template <spdlog::level::level_enum Level, class... Args>
     Logger(fmt::format_string<Args...>, Args&&...) -> Logger<Level, Args...>;
+    template <spdlog::level::level_enum Level, class... Args>
+    Logger(fmt::wformat_string<Args...>, Args&&...) -> Logger<Level, Args...>;
 
     template <class... Args>
     using trace    = Logger<spdlog::level::trace, Args...>;
@@ -45,8 +56,6 @@ namespace Log
 int main()
 {
     Log::info("Hello info from {}.", "main.cpp");
-    Log::err("Hello err from {}.", "main.cpp");
-    Log::warn("Hello warn from {}.", "main.cpp");
-    Log::debug("Hello debug from {}.", "main.cpp");
+    Log::info(L"Hello info from {}.", L"main.cpp");
     return 0;
 }
