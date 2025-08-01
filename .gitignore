@@ -39,3 +39,7 @@ Debug
 *.sln
 cmake_install.cmake
 /build
+/src/test_spdlog/*.user
+/src/test_spdlog/vcpkg_installed
+/src/test_spdlog/x64
+/x64
